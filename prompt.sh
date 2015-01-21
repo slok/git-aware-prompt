@@ -1,3 +1,11 @@
+
+
+# Needs font awesome and powerline
+BRANCH_ICON="" #"\357\204\246"
+GIT_ICON="" #"\357\207\223"
+DIRTY_ICON="" #"\357\200\215"
+NOT_DIRTY_ICON="" #"\357\200\214"
+
 find_git_branch() {
   # Based on: http://stackoverflow.com/a/13003854/170413
   local branch
@@ -5,18 +13,22 @@ find_git_branch() {
     if [[ "$branch" == "HEAD" ]]; then
       branch='detached*'
     fi
-    git_branch="($branch)"
+    git_branch=" $GIT_ICON $BRANCH_ICON $branch "
   else
     git_branch=""
   fi
 }
 
 find_git_dirty() {
-  local status=$(git status --porcelain 2> /dev/null)
-  if [[ "$status" != "" ]]; then
-    git_dirty='*'
+  local status="$(git status --porcelain 2> /dev/null)"
+  if [[ "$git_branch" != "" ]]; then
+    if [[ "$status" != "" ]]; then
+      git_dirty=" $DIRTY_ICON "
+    else
+        git_dirty=" $NOT_DIRTY_ICON "
+    fi
   else
-    git_dirty=''
+    git_dirty=""
   fi
 }
 
